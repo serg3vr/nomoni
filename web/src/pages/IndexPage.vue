@@ -43,21 +43,11 @@
       <div class="col-xs-12 col-sm-6">
         <div class="row">
           <div class="offset-9 col-3 text-right">
-            <!-- <q-select
-              outlined
-              bg-color="white"
-              v-model="model"
-              :options="options"
-              color="primary"
-              label="Month"
-              emit-value
-              map-options
-            /> -->
             <q-btn
               outline
               color="primary"
               class="bg-white"
-              label="Outline"
+              label="Add"
               icon="add"
               @click="addTransactionModal = true"
             />
@@ -65,30 +55,11 @@
         </div>
       </div>
     </div>
-    <!-- <div class="row bg-white">
-      <div class="col-12">
-        <div class="row">
-          <div class="col-12">
-            Total balance
-          </div>
-          <div class="col-12">
-            <span class="text-weight-medium text-h6">$ 999,999.99</span>
-          </div>
-        </div>
-      </div>
-    </div> -->
-    <!-- </div> -->
-    <!-- <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component> -->
 
     <div class="row q-mt-md">
       <div class="col-12">
         <q-table
-          title="Treats"
+          flat
           :rows="rows"
           :columns="columns"
           row-key="id"
@@ -99,16 +70,19 @@
     <q-dialog v-model="addTransactionModal">
       <q-card>
         <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6">Close icon</div>
+          <div class="text-h6">Add {{ fieldsType }}</div>
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
 
         <q-separator />
 
-        <q-card-section style="max-height: 50vh" class="scroll">
-          <!-- <p v-for="n in 15" :key="n">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.</p> -->
+        <q-card-section style="max-height: 66vh" class="scroll">
            <div class="row">
+            <div class="col-12">
+              <q-radio v-model="fields.type" val="1" label="Income" />
+              <q-radio v-model="fields.type" val="2" label="Outcome" />
+            </div>
             <div class="col-12">
               <q-input filled v-model="fields.date">
                 <template v-slot:prepend>
@@ -154,31 +128,35 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 // import type { Ref } from 'vue'
 
 const addTransactionModal = ref(false)
 const fields = reactive({
+  type: '2',
   date: '2019-02-01 12:44',
   amont: null
 })
 
-const model = ref('Oct')
-const options = [
-  { label: 'Oct', value: 'Oct' },
-  { label: 'Nov', value: 'Nov' },
-  { label: 'Dec', value: 'Div' }
-]
+const fieldsType = computed(() => {
+  return ['', 'income', 'outcome'][fields.type]
+})
+// const model = ref('Oct')
+
+// const options = [
+//   { label: 'Oct', value: 'Oct' },
+//   { label: 'Nov', value: 'Nov' },
+//   { label: 'Dec', value: 'Div' }
+// ]
 const rows = [
   { id: 1, date: 'Y-m-d H:i:s', amount: 99999.99, type: 1, action: 1, description: 'Something' },
   { id: 2, date: 'Y-m-d H:i:s', amount: 99999.99, type: 1, action: -1, description: 'Something' },
   { id: 3, date: 'Y-m-d H:i:s', amount: 99999.99, type: 1, action: 1, description: 'Something' }
 ]
-
 const columns = [
-  { name: 'date', align: 'left', label: 'Date', field: 'date', sortable: true },
-  { name: 'amount', align: 'left', label: 'Amount', field: 'amount', sortable: true },
-  { name: 'description', align: 'left', label: '', field: 'description', sortable: true }
+  { name: 'date', align: 'left', label: 'Date', field: 'date', sortable: false },
+  { name: 'amount', align: 'left', label: 'Amount', field: 'amount', sortable: false },
+  { name: 'description', align: 'left', label: '', field: 'description', sortable: false }
 ]
 
 
