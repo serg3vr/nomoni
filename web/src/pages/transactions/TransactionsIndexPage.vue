@@ -42,8 +42,8 @@
 
       <div class="col-xs-12 col-sm-6">
         <div class="row">
-          <div class="offset-9 col-3 text-right">
-            <!-- <q-select
+          <div class="offset-9 col-3">
+            <q-select
               outlined
               bg-color="white"
               v-model="model"
@@ -52,14 +52,6 @@
               label="Month"
               emit-value
               map-options
-            /> -->
-            <q-btn
-              outline
-              color="primary"
-              class="bg-white"
-              label="Outline"
-              icon="add"
-              @click="addTransactionModal = true"
             />
           </div>
         </div>
@@ -95,73 +87,12 @@
         />
       </div>
     </div>
-
-    <q-dialog v-model="addTransactionModal">
-      <q-card>
-        <q-card-section class="row items-center q-pb-none">
-          <div class="text-h6">Close icon</div>
-          <q-space />
-          <q-btn icon="close" flat round dense v-close-popup />
-        </q-card-section>
-
-        <q-separator />
-
-        <q-card-section style="max-height: 50vh" class="scroll">
-          <!-- <p v-for="n in 15" :key="n">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at omnis vel numquam exercitationem aut, natus minima, porro labore.</p> -->
-           <div class="row">
-            <div class="col-12">
-              <q-input filled v-model="fields.date">
-                <template v-slot:prepend>
-                  <q-icon name="event" class="cursor-pointer">
-                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                      <q-date v-model="fields.date" mask="YYYY-MM-DD HH:mm">
-                        <div class="row items-center justify-end">
-                          <q-btn v-close-popup label="Close" color="primary" flat />
-                        </div>
-                      </q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-
-                <template v-slot:append>
-                  <q-icon name="access_time" class="cursor-pointer">
-                    <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-                      <q-time v-model="fields.date" mask="YYYY-MM-DD HH:mm" format24h>
-                        <div class="row items-center justify-end">
-                          <q-btn v-close-popup label="Close" color="primary" flat />
-                        </div>
-                      </q-time>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
-            <div class="col-12">
-              <q-input v-model="fields.amount" label="Amount" />
-            </div>
-           </div>
-        </q-card-section>
-
-        <q-separator />
-
-        <q-card-actions align="right">
-          <!-- <q-btn flat label="Decline" color="primary" v-close-popup /> -->
-          <q-btn flat label="Accept" color="primary" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 // import type { Ref } from 'vue'
-
-const addTransactionModal = ref(false)
-const fields = reactive({
-  date: '2019-02-01 12:44',
-  amont: null
-})
 
 const model = ref('Oct')
 const options = [
