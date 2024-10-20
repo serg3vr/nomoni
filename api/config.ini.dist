@@ -1,9 +1,0 @@
-[database]
-adapter  = dbadapter
-host     = dbhost
-username = dbusername
-password = dbpassword
-dbname   = dbname
-
-[jwt]
-key = jwtsecretkey
