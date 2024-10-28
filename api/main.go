@@ -2,41 +2,68 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	_ "github.com/lib/pq"
 )
 
 var db *sql.DB
 
-type User struct {
-	ID       int64
-	Name     string
-	LastName string
+type Transaction struct {
+	ID     int64
+	Date   string
+	Amount float64
+	Type   int16
 }
 
-func getUsers() ([]User, error) {
-	var users []User
+// func getUsers() ([]User, error) {
+// 	var users []User
 
-	rows, err := db.Query("SELECT id, name, last_name FROM users")
+// 	rows, err := db.Query("SELECT id, name, last_name FROM users")
+// 	if err != nil {
+// 		return nil, fmt.Errorf("getUsers %v", err)
+// 	}
+// 	defer rows.Close()
+
+// 	for rows.Next() {
+// 		var user User
+// 		if err := rows.Scan(&user.ID, &user.Name, &user.LastName); err != nil {
+// 			return nil, fmt.Errorf("getUsers %v", err)
+// 		}
+// 		users = append(users, user)
+// 	}
+// 	if err := rows.Err(); err != nil {
+// 		return nil, fmt.Errorf("getUsers %v", err)
+// 	}
+// 	return users, nil
+// }
+
+func getTransactions() ([]Transaction, error) {
+	var transactions []Transaction
+
+	rows, err := db.Query("SELECT id, date, amount, type FROM transactions")
 	if err != nil {
-		return nil, fmt.Errorf("getUsers %v", err)
+		return nil, fmt.Errorf("getTransactions %v", err)
 	}
 	defer rows.Close()
 
 	for rows.Next() {
-		var user User
-		if err := rows.Scan(&user.ID, &user.Name, &user.LastName); err != nil {
-			return nil, fmt.Errorf("getUsers %v", err)
+		var tran Transaction
+		if err := rows.Scan(&tran.ID, &tran.Date, &tran.Amount, &tran.Type); err != nil {
+			return nil, fmt.Errorf("getTransactions %v", err)
 		}
-		users = append(users, user)
+		transactions = append(transactions, tran)
 	}
 	if err := rows.Err(); err != nil {
-		return nil, fmt.Errorf("getUsers %v", err)
+		return nil, fmt.Errorf("getTransactions %v", err)
 	}
-	return users, nil
+	return transactions, nil
 }
 
 func initDB() {
@@ -59,12 +86,22 @@ func initDB() {
 	fmt.Println("Connected!")
 }
 
-func main() {
-	initDB()
-
-	users, err := getUsers()
+func loadTransactions(w http.ResponseWriter, r *http.Request) {
+	transactions, err := getTransactions()
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("Users found: %v\n", users)
+	fmt.Printf("Users found: %v\n", transactions)
+
+	json.NewEncoder(w).Encode(transactions)
+}
+
+func main() {
+	initDB()
+
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Get("/", loadTransactions)
+
+	http.ListenAndServe(":3000", r)
 }
