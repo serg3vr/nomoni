@@ -63,6 +63,7 @@
           :rows="rows"
           :columns="columns"
           row-key="id"
+          hide-header
         />
       </div>
     </div>
@@ -120,7 +121,7 @@
 
         <q-card-actions align="right">
           <!-- <q-btn flat label="Decline" color="primary" v-close-popup /> -->
-          <q-btn flat label="Accept" color="primary" v-close-popup />
+          <q-btn flat label="Accept" color="primary" v-close-popup @click="loadTransactions" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -130,6 +131,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue';
 // import type { Ref } from 'vue'
+import { api } from 'src/boot/axios'
 
 const addTransactionModal = ref(false)
 const fields = reactive({
@@ -141,24 +143,20 @@ const fields = reactive({
 const fieldsType = computed(() => {
   return ['', 'income', 'outcome'][fields.type]
 })
-// const model = ref('Oct')
 
-// const options = [
-//   { label: 'Oct', value: 'Oct' },
-//   { label: 'Nov', value: 'Nov' },
-//   { label: 'Dec', value: 'Div' }
-// ]
-const rows = [
-  { id: 1, date: 'Y-m-d H:i:s', amount: 99999.99, type: 1, action: 1, description: 'Something' },
-  { id: 2, date: 'Y-m-d H:i:s', amount: 99999.99, type: 1, action: -1, description: 'Something' },
-  { id: 3, date: 'Y-m-d H:i:s', amount: 99999.99, type: 1, action: 1, description: 'Something' }
-]
+const rows = ref([])
+
 const columns = [
   { name: 'date', align: 'left', label: 'Date', field: 'date', sortable: false },
   { name: 'amount', align: 'left', label: 'Amount', field: 'amount', sortable: false },
   { name: 'description', align: 'left', label: '', field: 'description', sortable: false }
 ]
 
+const loadTransactions = () => {
+  api.get('transactions').then(({ data }) => {
+    rows.value = data
+  }).catch(error => error)
+}
 
-
+loadTransactions()
 </script>
