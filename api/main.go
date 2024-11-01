@@ -16,38 +16,17 @@ import (
 var db *sql.DB
 
 type Transaction struct {
-	ID     int64
-	Date   string
-	Amount float64
-	Type   int16
+	ID          int64
+	Date        string
+	Amount      float64
+	Type        int16
+	Description string
 }
-
-// func getUsers() ([]User, error) {
-// 	var users []User
-
-// 	rows, err := db.Query("SELECT id, name, last_name FROM users")
-// 	if err != nil {
-// 		return nil, fmt.Errorf("getUsers %v", err)
-// 	}
-// 	defer rows.Close()
-
-// 	for rows.Next() {
-// 		var user User
-// 		if err := rows.Scan(&user.ID, &user.Name, &user.LastName); err != nil {
-// 			return nil, fmt.Errorf("getUsers %v", err)
-// 		}
-// 		users = append(users, user)
-// 	}
-// 	if err := rows.Err(); err != nil {
-// 		return nil, fmt.Errorf("getUsers %v", err)
-// 	}
-// 	return users, nil
-// }
 
 func getTransactions() ([]Transaction, error) {
 	var transactions []Transaction
 
-	rows, err := db.Query("SELECT id, date, amount, type FROM transactions")
+	rows, err := db.Query("SELECT id, date, amount, type, description FROM transactions")
 	if err != nil {
 		return nil, fmt.Errorf("getTransactions %v", err)
 	}
@@ -55,7 +34,7 @@ func getTransactions() ([]Transaction, error) {
 
 	for rows.Next() {
 		var tran Transaction
-		if err := rows.Scan(&tran.ID, &tran.Date, &tran.Amount, &tran.Type); err != nil {
+		if err := rows.Scan(&tran.ID, &tran.Date, &tran.Amount, &tran.Type, &tran.Description); err != nil {
 			return nil, fmt.Errorf("getTransactions %v", err)
 		}
 		transactions = append(transactions, tran)
@@ -101,7 +80,7 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
-	r.Get("/", loadTransactions)
+	r.Get("/transactions", loadTransactions)
 
 	http.ListenAndServe(":3000", r)
 }
