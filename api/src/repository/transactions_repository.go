@@ -9,7 +9,7 @@ import (
 
 type TransactionsRepository struct{}
 
-func (jp *TransactionsRepository) GetAll(loggedUserId int) ([]models.ResponseTransaction, error) {
+func (r *TransactionsRepository) GetAll(loggedUserId int) ([]models.ResponseTransaction, error) {
 	sqlStatement := `
 		SELECT
 			id,
@@ -41,4 +41,23 @@ func (jp *TransactionsRepository) GetAll(loggedUserId int) ([]models.ResponseTra
 		data = append(data, transaction)
 	}
 	return data, err
+}
+
+func (r *TransactionsRepository) Create(loggedUserId int, transaction models.RequestedTransaction) (int, error) {
+	sqlStatement := `
+		insert into transactions(created_by, user_id, date, amount, type_id, description)
+		values ($1, $2, $3, $4, $5, NULLIF($6, '')) returning id
+	`
+	var id int
+	err := config.DB.QueryRow(
+		sqlStatement,
+		loggedUserId,
+		loggedUserId,
+		transaction.Date,
+		transaction.Amount,
+		transaction.TypeId,
+		transaction.Description,
+	).Scan(&id)
+
+	return id, err
 }
