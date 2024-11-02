@@ -1,4 +1,4 @@
-module nomoni/main
+module nomoni
 
 go 1.23.2
 
