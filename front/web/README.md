@@ -1,4 +1,4 @@
-# Nomoni api (nomoni-api)
+# Nomoni app (nomoni-app)
 
 ## Install the dependencies
 

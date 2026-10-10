@@ -226,7 +226,7 @@ export default defineConfig(ctx => {
       builder: {
         // https://www.electron.build/configuration
 
-        appId: "nomoni-api"
+        appId: "nomoni-app"
       }
     },
 
