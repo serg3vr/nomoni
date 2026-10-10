@@ -160,3 +160,6 @@ __pycache__/
 *.py[cod]
 .venv/
 .pytest_cache/
+
+# keep .env.dist templates, ignore real .env
+!.env.dist

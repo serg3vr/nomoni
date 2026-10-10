@@ -1,11 +1,44 @@
+# Nomoni infrastructure template.
+# Copy this file without the .dist suffix before running docker compose.
+# All sensitive values live in back/api/.env (gitignored; see back/api/.env.dist).
+#
+# IMPORTANT: the API connects to a PostgreSQL you host yourself (NOT containerized).
+# Create a database (default "nomoni") on your server and point the API at it
+# via DATABASE_URL in back/api/.env. From inside the container the host is
+# `host.docker.internal` (Docker Desktop) — adjust for plain Linux hosts.
+
 services:
   api:
+    container_name: nomoni-api
     build:
       context: .
       dockerfile: docker/Dockerfile
     ports:
       - "8000:8000"
     restart: unless-stopped
+    env_file: back/api/.env
     volumes:
-      - ./back/api/app:/srv/app
+      - ./back/api:/srv
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+# Optional containerized Postgres for disposable dev environments only.
+# Do not use for your primary database if you fear data loss.
+#
+# services:
+#   db:
+#     container_name: nomoni-postgres
+#     image: postgres:16-alpine
+#     ports:
+#       - "5433:5432"
+#     restart: unless-stopped
+#     env_file: back/api/.env
+#     volumes:
+#       - nomoni_pgdata:/var/lib/postgresql/data
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+#       interval: 5s
+#       timeout: 3s
+#       retries: 12
+#
+# volumes:
+#   nomoni_pgdata:
