@@ -68,6 +68,7 @@ async def test_me_returns_user_without_password(client):
     body = response.json()
     assert body["email"] == "d@mail.com"
     assert body["name"] == "Dana"
+    assert body["currency"] == "MXN"
     assert "password_hash" not in body
 
 

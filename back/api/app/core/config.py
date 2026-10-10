@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 60 * 24 * 7
     cors_origins: str = "http://localhost:9000"
+    system_user_email: str = "system@nomoni.com"
 
     @property
     def cors_origin_list(self) -> list[str]:

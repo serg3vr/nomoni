@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.auth.deps import get_current_user, router_prefix
 from app.auth.schemas import Token, UserCreate, UserOut, UserUpdate
 from app.auth.service import create_access_token, hash_password, verify_password
+from app.auth.seed import add_user_defaults
 from app.db.session import get_db
 from app.models.user import User
 
@@ -26,9 +27,10 @@ async def register(data: UserCreate, db: AsyncSession = Depends(get_db)) -> Toke
         email=email,
         password_hash=hash_password(data.password),
         name=data.name,
-        currency=data.currency,
     )
     db.add(user)
+    await db.flush()
+    await add_user_defaults(db, user)
     await db.commit()
     return Token(access_token=create_access_token(user.id))
 

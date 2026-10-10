@@ -8,7 +8,6 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str = Field(min_length=8, max_length=72)
     name: str | None = None
-    currency: str = "USD"
 
 
 class UserUpdate(BaseModel):

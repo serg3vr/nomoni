@@ -9,8 +9,8 @@ from sqlalchemy.ext.asyncio import (
 )
 
 from app.core.config import settings
-from app.models.base import Base
-from app.models.user import User  # noqa: F401
+from app.models import Base
+from app.models import Category, Transaction, User, Wallet  # noqa: F401
 
 config = context.config
 if config.config_file_name is not None:
