@@ -148,5 +148,15 @@ vite.config.ts.timestamp-*
 # Turbo Repo
 .turbo
 
-# Local docs
+# Local docs (not published)
 MVP.md
+
+# Local infra (distributed as .dist; each person copies without the .dist suffix)
+docker-compose.yml
+docker/Dockerfile
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
