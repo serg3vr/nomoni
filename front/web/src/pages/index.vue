@@ -3,7 +3,6 @@
     <q-header elevated class="bg-primary text-white">
       <q-toolbar>
         <q-btn
-          v-if="$q.screen.lt.md"
           flat
           dense
           round

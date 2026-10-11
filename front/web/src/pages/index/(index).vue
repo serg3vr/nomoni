@@ -30,8 +30,6 @@
       </div>
     </q-card>
 
-    <QuickAddForm @saved="onReload" />
-
     <div v-if="transactions.items.length > 0" class="q-mt-lg">
       <div class="text-subtitle1 text-weight-medium q-mb-sm">
         Últimos movimientos
@@ -46,6 +44,9 @@
         class="q-mt-sm full-width"
       />
     </div>
+
+    <!-- place QPageSticky at end of page -->
+    <QuickAddForm @saved="onReload" />
   </q-page>
 </template>
 
