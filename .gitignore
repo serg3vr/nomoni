@@ -163,3 +163,5 @@ __pycache__/
 
 # keep .env.dist templates, ignore real .env
 !.env.dist
+
+# Python bytecode dirs (api moves around during refactors)

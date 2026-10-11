@@ -9,7 +9,8 @@ from app.core.config import settings
 from app.db.session import get_db
 from app.models.user import User
 
-router_prefix = "/auth"
+__all__ = ["get_db", "oauth2_scheme", "get_current_user"]
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
@@ -23,7 +24,9 @@ async def get_current_user(
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token, settings.jwt_secret, algorithms=[settings.jwt_algorithm])
+        payload = jwt.decode(
+            token, settings.jwt_secret, algorithms=[settings.jwt_algorithm]
+        )
         user_id = uuid.UUID(payload["sub"])
     except (jwt.InvalidTokenError, KeyError, ValueError):
         raise credentials_error
@@ -32,8 +35,5 @@ async def get_current_user(
     if user is None:
         raise credentials_error
     if not user.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Account is deactivated",
-        )
+        raise HTTPException(status.HTTP_403_FORBIDDEN, "Account is deactivated")
     return user
