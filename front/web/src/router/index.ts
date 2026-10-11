@@ -38,5 +38,16 @@ export default defineRouter((/* { store, ssrContext } */) => {
     handleHotUpdate(Router);
   }
 
+  Router.beforeEach(to => {
+    const token = localStorage.getItem("nomoni_token");
+    const isAuthRoute = to.path.startsWith("/auth");
+    if (!token && !isAuthRoute) {
+      return { path: "/auth/login" };
+    }
+    if (token && isAuthRoute) {
+      return { path: "/" };
+    }
+  });
+
   return Router;
 });

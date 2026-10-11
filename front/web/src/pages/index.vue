@@ -1,94 +1,84 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+  <q-layout view="hHh lpR fFf">
+    <q-header elevated class="bg-primary text-white">
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
-        <q-toolbar-title> Quasar App </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
+        <q-toolbar-title class="text-weight-bold">
+          {{ titles[route.path] || "Nomoni" }}
+        </q-toolbar-title>
       </q-toolbar>
     </q-header>
-
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Essential Links </q-item-label>
-
-        <EssentialLink
-          v-for="link in linksList"
-          :key="link.label"
-          v-bind="link"
-        />
-      </q-list>
-    </q-drawer>
 
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <q-footer bordered class="bg-white text-grey-8">
+      <q-tabs
+        v-model="activeTab"
+        no-caps
+        align="justify"
+        active-color="primary"
+        indicator-color="transparent"
+        class="shadow-up"
+      >
+        <q-tab
+          v-for="tab in tabs"
+          :key="tab.to"
+          :name="tab.to"
+          :icon="tab.icon"
+          :label="tab.label"
+          @click="router.push(tab.to)"
+        />
+      </q-tabs>
+    </q-footer>
   </q-layout>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import EssentialLink, {
-  type EssentialLinkProps
-} from "@/components/EssentialLink.vue";
+import { useQuasar } from "quasar";
+import { computed, onMounted, watch, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useAuthStore } from "@/stores/auth";
 
-const linksList: EssentialLinkProps[] = [
-  {
-    label: "Docs",
-    caption: "quasar.dev",
-    icon: "school",
-    link: "https://quasar.dev"
-  },
-  {
-    label: "GitHub",
-    caption: "github.com/quasarframework",
-    icon: "code",
-    link: "https://github.com/quasarframework"
-  },
-  {
-    label: "Discord Chat Channel",
-    caption: "chat.quasar.dev",
-    icon: "chat",
-    link: "https://chat.quasar.dev"
-  },
-  {
-    label: "Forum",
-    caption: "forum.quasar.dev",
-    icon: "record_voice_over",
-    link: "https://forum.quasar.dev"
-  },
-  {
-    label: "Twitter",
-    caption: "@quasarframework",
-    icon: "rss_feed",
-    link: "https://twitter.quasar.dev"
-  },
-  {
-    label: "Facebook",
-    caption: "@QuasarFramework",
-    icon: "public",
-    link: "https://facebook.quasar.dev"
-  },
-  {
-    label: "Quasar Awesome",
-    caption: "Community Quasar projects",
-    icon: "favorite",
-    link: "https://awesome.quasar.dev"
-  }
+const $q = useQuasar();
+const route = useRoute();
+const router = useRouter();
+const auth = useAuthStore();
+
+const tabs = [
+  { to: "/", icon: "home", label: "Inicio" },
+  { to: "/transactions", icon: "receipt_long", label: "Movimientos" },
+  { to: "/categories", icon: "category", label: "Categorías" },
+  { to: "/wallets", icon: "account_balance_wallet", label: "Monederos" },
+  { to: "/profile", icon: "person", label: "Perfil" }
 ];
 
-const leftDrawerOpen = ref(false);
+const titles: Record<string, string> = {
+  "/": "Inicio",
+  "/transactions": "Movimientos",
+  "/categories": "Categorías",
+  "/wallets": "Monederos",
+  "/profile": "Perfil"
+};
 
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value;
+const activeTab = computed<string>(() => route.path);
+
+if (auth.isLoggedIn && !auth.user) {
+  onMounted(() => {
+    auth.fetchMe().catch(() => {
+      auth.logout();
+      router.push("/auth/login");
+    });
+  });
 }
+
+watch(
+  () => auth.token,
+  value => {
+    if (!value) {
+      $q.notify({ message: "Sesión cerrada", type: "info" });
+      router.push("/auth/login");
+    }
+  }
+);
 </script>

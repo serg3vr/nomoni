@@ -20,9 +20,9 @@ import type {
 
 declare module 'vue-router' {
   interface TypesConfig {
-    ParamParsers:
-      | never
+    _ParamParsers: {}
     RouteNamedMap: import('vue-router/auto-routes').RouteNamedMap
+    _RouteFileInfoMap: import('vue-router/auto-routes')._RouteFileInfoMap
   }
 }
 
@@ -37,18 +37,10 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       Record<never, never>,
       | '//(index)'
-      | '//second'
     >,
     '//(index)': RouteRecordInfo<
       '//(index)',
       '/',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '//second': RouteRecordInfo<
-      '//second',
-      '/second',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -58,6 +50,56 @@ declare module 'vue-router/auto-routes' {
       '/:path(.*)',
       { path: ParamValue<true> },
       { path: ParamValue<false> },
+      | never
+    >,
+    '/auth': RouteRecordInfo<
+      '/auth',
+      '/auth',
+      Record<never, never>,
+      Record<never, never>,
+      | '/auth/login'
+      | '/auth/register'
+    >,
+    '/auth/login': RouteRecordInfo<
+      '/auth/login',
+      '/auth/login',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/auth/register': RouteRecordInfo<
+      '/auth/register',
+      '/auth/register',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/categories': RouteRecordInfo<
+      '/categories',
+      '/categories',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/profile': RouteRecordInfo<
+      '/profile',
+      '/profile',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/transactions': RouteRecordInfo<
+      '/transactions',
+      '/transactions',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/wallets': RouteRecordInfo<
+      '/wallets',
+      '/wallets',
+      Record<never, never>,
+      Record<never, never>,
       | never
     >,
   }
@@ -77,26 +119,83 @@ declare module 'vue-router/auto-routes' {
       routes:
         | '/'
         | '//(index)'
-        | '//second'
       views:
         | 'default'
+      pathParamNames:
+        | never
     }
     'src/pages/index/(index).vue': {
       routes:
         | '//(index)'
       views:
         | never
-    }
-    'src/pages/index/second.vue': {
-      routes:
-        | '//second'
-      views:
+      pathParamNames:
         | never
     }
     'src/pages/[...path].vue': {
       routes:
         | '/[...path]'
       views:
+        | never
+      pathParamNames:
+        | 'path'
+    }
+    'src/pages/auth.vue': {
+      routes:
+        | '/auth'
+        | '/auth/login'
+        | '/auth/register'
+      views:
+        | 'default'
+      pathParamNames:
+        | never
+    }
+    'src/pages/auth/login.vue': {
+      routes:
+        | '/auth/login'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/auth/register.vue': {
+      routes:
+        | '/auth/register'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/categories.vue': {
+      routes:
+        | '/categories'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/profile.vue': {
+      routes:
+        | '/profile'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/transactions.vue': {
+      routes:
+        | '/transactions'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/wallets.vue': {
+      routes:
+        | '/wallets'
+      views:
+        | never
+      pathParamNames:
         | never
     }
   }
