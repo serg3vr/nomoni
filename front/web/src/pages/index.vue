@@ -63,7 +63,7 @@
     </q-drawer>
 
     <q-page-container>
-      <slot />
+      <router-view />
     </q-page-container>
 
     <q-footer v-if="$q.screen.lt.md" bordered class="bg-white text-grey-8">

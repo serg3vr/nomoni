@@ -1,61 +1,58 @@
 <template>
-  <MainLayout>
-    <q-page class="q-pa-lg q-pb-xl page-content">
-      <div class="row q-col-gutter-sm q-mb-md">
-        <div class="col">
-          <q-select
-            v-model="monthFilter"
-            filled
-            dense
-            label="Mes"
-            :options="monthOptions"
-            emit-value
-            map-options
-          />
-        </div>
-        <div class="col">
-          <q-select
-            v-model="categoryFilter"
-            filled
-            dense
-            label="Categoría"
-            :options="categoryOptions"
-            option-value="id"
-            option-label="name"
-            emit-value
-            map-options
-            clearable
-          />
-        </div>
-        <div class="col">
-          <q-select
-            v-model="walletFilter"
-            filled
-            dense
-            label="Monedero"
-            :options="walletOptions"
-            option-value="id"
-            option-label="name"
-            emit-value
-            map-options
-            clearable
-          />
-        </div>
+  <q-page class="q-pa-lg q-pb-xl page-content">
+    <div class="row q-col-gutter-sm q-mb-md">
+      <div class="col">
+        <q-select
+          v-model="monthFilter"
+          filled
+          dense
+          label="Mes"
+          :options="monthOptions"
+          emit-value
+          map-options
+        />
       </div>
-
-      <q-toggle v-model="pendingOnly" label="Solo pendientes" color="amber-9" />
-
-      <div class="text-caption text-grey-7 q-my-sm">
-        Total: {{ fmtCents(total, currency) }}
+      <div class="col">
+        <q-select
+          v-model="categoryFilter"
+          filled
+          dense
+          label="Categoría"
+          :options="categoryOptions"
+          option-value="id"
+          option-label="name"
+          emit-value
+          map-options
+          clearable
+        />
       </div>
+      <div class="col">
+        <q-select
+          v-model="walletFilter"
+          filled
+          dense
+          label="Monedero"
+          :options="walletOptions"
+          option-value="id"
+          option-label="name"
+          emit-value
+          map-options
+          clearable
+        />
+      </div>
+    </div>
 
-      <transaction-list :transactions="transactions.items" show-delete />
-    </q-page>
-  </MainLayout>
+    <q-toggle v-model="pendingOnly" label="Solo pendientes" color="amber-9" />
+
+    <div class="text-caption text-grey-7 q-my-sm">
+      Total: {{ fmtCents(total, currency) }}
+    </div>
+
+    <transaction-list :transactions="transactions.items" show-delete />
+  </q-page>
 </template>
 
 <script setup lang="ts">
-import MainLayout from "@/layouts/MainLayout.vue";
 import { computed, onMounted, ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useCatalogStore } from "@/stores/catalog";
