@@ -63,6 +63,7 @@
 
 <script setup lang="ts">
 import { useQuasar } from "quasar";
+import axios from "axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
@@ -86,10 +87,21 @@ async function onSubmit(): Promise<void> {
       name: name.value || undefined
     });
     await router.push("/");
-  } catch {
+  } catch (err) {
+    console.error("[register]", err);
+    const axiosError = axios.isAxiosError(err) ? err : undefined;
+    const detail = axiosError
+      ? axiosError.response
+        ? `HTTP ${axiosError.response.status}: ${JSON.stringify(axiosError.response.data)}`
+        : `Error de red: ${axiosError.message}`
+      : err instanceof Error
+        ? err.message
+        : String(err);
     $q.notify({
       type: "negative",
-      message: "No se pudo crear la cuenta. ¿El correo ya está registrado?"
+      message: `No se pudo crear la cuenta (${detail})`,
+      multiLine: true,
+      timeout: 8000
     });
   } finally {
     loading.value = false;

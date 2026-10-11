@@ -40,12 +40,8 @@ export default defineRouter((/* { store, ssrContext } */) => {
 
   Router.beforeEach(to => {
     const token = localStorage.getItem("nomoni_token");
-    const isAuthRoute = to.path.startsWith("/auth");
-    if (!token && !isAuthRoute) {
+    if (!token && to.path !== "/auth/login" && to.path !== "/auth/register") {
       return { path: "/auth/login" };
-    }
-    if (token && isAuthRoute) {
-      return { path: "/" };
     }
   });
 

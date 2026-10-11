@@ -1,50 +1,53 @@
 <template>
-  <q-page class="q-pa-md q-pb-xl">
-    <q-card flat bordered class="q-pa-md q-mb-md">
-      <div class="row items-center q-gutter-md">
-        <q-avatar size="64px" color="primary" text-color="white">
-          <span class="text-h5 text-weight-bold">{{ initials }}</span>
-        </q-avatar>
-        <div>
-          <div class="text-h6">{{ auth.user?.name || "Usuario" }}</div>
-          <div class="text-caption text-grey-7">{{ auth.user?.email }}</div>
+  <MainLayout>
+    <q-page class="q-pa-lg q-pb-xl page-content">
+      <q-card flat bordered class="q-pa-md q-mb-md">
+        <div class="row items-center q-gutter-md">
+          <q-avatar size="64px" color="primary" text-color="white">
+            <span class="text-h5 text-weight-bold">{{ initials }}</span>
+          </q-avatar>
+          <div>
+            <div class="text-h6">{{ auth.user?.name || "Usuario" }}</div>
+            <div class="text-caption text-grey-7">{{ auth.user?.email }}</div>
+          </div>
         </div>
-      </div>
-    </q-card>
+      </q-card>
 
-    <q-card flat bordered class="q-pa-md q-mb-md">
-      <div class="text-subtitle1 text-weight-medium q-mb-sm">Perfil</div>
-      <q-form class="q-gutter-md" @submit="onSave">
-        <q-input v-model="form.name" filled label="Nombre" />
-        <q-select
-          v-model="form.currency"
-          filled
-          label="Moneda"
-          :options="currencies"
-        />
-        <q-btn
-          color="primary"
-          label="Guardar cambios"
-          type="submit"
-          no-caps
-          :loading="saving"
-        />
-      </q-form>
-    </q-card>
+      <q-card flat bordered class="q-pa-md q-mb-md">
+        <div class="text-subtitle1 text-weight-medium q-mb-sm">Perfil</div>
+        <q-form class="q-gutter-md" @submit="onSave">
+          <q-input v-model="form.name" filled label="Nombre" />
+          <q-select
+            v-model="form.currency"
+            filled
+            label="Moneda"
+            :options="currencies"
+          />
+          <q-btn
+            color="primary"
+            label="Guardar cambios"
+            type="submit"
+            no-caps
+            :loading="saving"
+          />
+        </q-form>
+      </q-card>
 
-    <q-btn
-      flat
-      color="negative"
-      icon="logout"
-      label="Cerrar sesión"
-      no-caps
-      class="full-width"
-      @click="onLogout"
-    />
-  </q-page>
+      <q-btn
+        flat
+        color="negative"
+        icon="logout"
+        label="Cerrar sesión"
+        no-caps
+        class="full-width"
+        @click="onLogout"
+      />
+    </q-page>
+  </MainLayout>
 </template>
 
 <script setup lang="ts">
+import MainLayout from "@/layouts/MainLayout.vue";
 import { ref, computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
