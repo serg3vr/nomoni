@@ -22,7 +22,7 @@ Personal finance tracker monorepo. `back/api` = FastAPI + SQLAlchemy 2.0 (async)
 
 ## Frontend (`front/web`)
 
-- Commands: `pnpm install`, `pnpm run dev` (port 9000 — that's also why `CORS_ORIGINS` defaults to `http://localhost:9000`), `pnpm run build`. Verify with `pnpm run lint:check` then `pnpm run typecheck`; to fix formatting/lint use `pnpm run lint` (oxfmt + oxlint — **not** eslint/prettier).
+- Commands: `npm install`, `npm run dev` (port 9000 — that's also why `CORS_ORIGINS` defaults to `http://localhost:9000`), `npm run build`. Verify with `npm run lint:check` then `npm run typecheck`; to fix formatting/lint use `npm run lint` (oxfmt + oxlint — **not** eslint/prettier).
 - Routing is **file-based** (`filenameBasedRouting: true`, `vue-router/auto-routes`): a page under `src/pages/auth/login.vue` is route `/auth/login`. `src/router/typed-router.d.ts` is generated — don't hand-edit.
 - The dev server proxies `/api/*` to `localhost:8000` and **strips the `/api` prefix**; axios `baseURL` defaults to `/api` (`VITE_API_URL` to override). So frontend code calls `/api/transactions`, the backend sees `/transactions`.
 - Auth token lives in `localStorage["nomoni_token"]`; a router guard and an axios 401 interceptor both redirect to `/auth/login`.
