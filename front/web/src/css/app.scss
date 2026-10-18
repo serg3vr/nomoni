@@ -1,5 +1,25 @@
 // app global css
 .page-content {
-  max-width: 960px;
+  max-width: 1080px;
   margin: 0 auto;
+}
+
+.app-header {
+  border-bottom: 1px solid $grey-3;
+}
+
+.brand-avatar {
+  border-radius: 10px;
+}
+
+.stat-chip {
+  font-size: 12px;
+}
+
+.border-top {
+  border-top: 1px solid $grey-3;
+}
+
+.app-active-item {
+  border-left: 3px solid $primary;
 }
