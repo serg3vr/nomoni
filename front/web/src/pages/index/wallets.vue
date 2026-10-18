@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-lg q-pb-xl page-content">
+  <q-page class="q-pa-md q-pb-xl page-content">
     <q-btn
       color="primary"
       icon="add"

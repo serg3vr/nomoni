@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-lg q-pb-xl page-content">
+  <q-page class="q-pa-md q-pb-xl page-content">
     <q-card flat bordered class="q-pa-md q-mb-md">
       <div class="row items-center q-gutter-md">
         <q-avatar size="64px" color="primary" text-color="white">

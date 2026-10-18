@@ -85,7 +85,6 @@
     <q-drawer
       v-model="drawerOpen"
       show-if-above
-      :width="248"
       bordered
       class="bg-white column"
     >

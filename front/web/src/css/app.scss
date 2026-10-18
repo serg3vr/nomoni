@@ -1,25 +1,30 @@
 // app global css
-.page-content {
-  max-width: 1080px;
-  margin: 0 auto;
+
+.debug {
+  outline: 1px solid red;
 }
 
-.app-header {
-  border-bottom: 1px solid $grey-3;
-}
+// .page-content {
+//   max-width: 1080px;
+//   margin: 0 auto;
+// }
 
-.brand-avatar {
-  border-radius: 10px;
-}
+// .app-header {
+//   border-bottom: 1px solid $grey-3;
+// }
 
-.stat-chip {
-  font-size: 12px;
-}
+// .brand-avatar {
+//   border-radius: 10px;
+// }
 
-.border-top {
-  border-top: 1px solid $grey-3;
-}
+// .stat-chip {
+//   font-size: 12px;
+// }
 
-.app-active-item {
-  border-left: 3px solid $primary;
-}
+// .border-top {
+//   border-top: 1px solid $grey-3;
+// }
+
+// .app-active-item {
+//   border-left: 3px solid $primary;
+// }

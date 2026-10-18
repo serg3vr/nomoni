@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-lg q-pb-xl page-content">
+  <q-page class="q-pa-md q-pb-xl page-content">
     <div class="row q-col-gutter-md q-mb-md">
       <div class="col-12 col-sm-4">
         <stat-card
