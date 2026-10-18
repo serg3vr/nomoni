@@ -1,4 +1,4 @@
-"""init schema
+"""init schema (complete)
 
 Revision ID: 0001
 Revises:
@@ -29,8 +29,11 @@ def upgrade() -> None:
     sa.Column('password_hash', sa.String(length=255), nullable=False),
     sa.Column('name', sa.String(length=120), nullable=True),
     sa.Column('currency', sa.String(length=8), server_default='MXN', nullable=False),
+    sa.Column('role', sa.String(length=10), server_default='USER', nullable=False),
+    sa.Column('is_active', sa.Boolean(), server_default=sa.text('true'), nullable=False),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('email')
+    sa.UniqueConstraint('email'),
+    sa.CheckConstraint("role IN ('USER', 'ADMIN', 'SYSTEM')", name='users_role_check'),
     )
     op.create_table('categories',
     sa.Column('id', sa.Uuid(), nullable=False),
@@ -102,6 +105,18 @@ def upgrade() -> None:
     # runtime user grants (CRUD-only account)
     op.execute(f"GRANT USAGE ON SCHEMA public TO {RUNTIME_DB_USER}")
     op.execute(f"GRANT SELECT, INSERT, UPDATE, DELETE ON users, categories, wallets, transactions TO {RUNTIME_DB_USER}")
+
+    # default privileges: every object the user running the migration creates
+    # from now on is automatically usable by the runtime user (no need to
+    # remember GRANTs). Without FOR ROLE it applies to the current role.
+    op.execute(
+        f"ALTER DEFAULT PRIVILEGES IN SCHEMA public "
+        f"GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO {RUNTIME_DB_USER}"
+    )
+    op.execute(
+        f"ALTER DEFAULT PRIVILEGES IN SCHEMA public "
+        f"GRANT USAGE, SELECT ON SEQUENCES TO {RUNTIME_DB_USER}"
+    )
 
 
 def downgrade() -> None:
